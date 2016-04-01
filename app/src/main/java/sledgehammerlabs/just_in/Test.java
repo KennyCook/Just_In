@@ -5,5 +5,5 @@ package sledgehammerlabs.just_in;
  */
 public class Test
 {
-    private boolean GHPushable = false;
+    private boolean GHPushable = true;
 }
