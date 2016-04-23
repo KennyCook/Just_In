@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context=".PinCreate">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:background="#58afed">
+
+        <TextView
+            android:id="@+id/category_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pin_create_category_text"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:layout_marginTop="30dp"
+            android:textColor="#ffffff" />
+
+        <Spinner
+            android:id="@+id/category_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/category_text_view"
+            android:layout_marginTop="15dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:background="#fcf5ae">
+        </Spinner>
+
+        <TextView
+            android:id="@+id/time_to_live_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/category_spinner"
+            android:layout_marginTop="50dp"
+            android:text="@string/pin_create_time_to_live_text"
+            android:textColor="#ffffff"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"/>
+
+        <Spinner
+            android:id="@+id/time_to_live_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/time_to_live_text_view"
+            android:layout_marginTop="15dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:background="#fcf5ae">
+        </Spinner>
+
+        <TextView
+            android:id="@+id/description_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/pin_create_description_text"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/time_to_live_spinner"
+            android:layout_marginTop="50dp"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+            android:textColor="#ffffff" />
+
+        <EditText
+            android:id="@+id/pin_description_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:inputType="textMultiLine"
+            android:layout_below="@+id/description_text_view"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="15dp"
+            android:background="#fcf5ae"
+            android:gravity="start"
+            android:textAlignment="textStart"
+            android:maxLength="255" />
+
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/pin_create_submit_button_text"-->
+            <!--android:textColor="#ffffff"-->
+            <!--android:textSize="20sp"-->
+            <!--android:textAllCaps="true"-->
+            <!--android:id="@+id/submit_pin_create_button"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:layout_marginBottom="20dp"-->
+            <!--android:layout_marginStart="20dp"-->
+            <!--android:background="#5ECE36"-->
+            <!--android:onClick="SubmitPinCreate"/>-->
+
+        <ImageButton
+            android:id="@+id/submit_pin_create_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/submitpincreate"
+            android:onClick="SubmitPinCreate"
+            android:background="#00ffffff"/>
+
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/pin_create_cancel_button_text"-->
+            <!--android:textColor="#ffffff"-->
+            <!--android:textSize="20sp"-->
+            <!--android:textAllCaps="true"-->
+            <!--android:id="@+id/cancel_pin_create_button"-->
+            <!--android:layout_below="@+id/pin_description_edittext"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:layout_marginBottom="20dp"-->
+            <!--android:layout_marginEnd="20dp"-->
+            <!--android:background="#CF1818"-->
+            <!--android:onClick="CancelPinCreate"/>-->
+
+        <ImageButton
+            android:id="@+id/cancel_pin_create_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pin_description_edittext"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/cancelpincreate"
+            android:onClick="CancelPinCreate"
+            android:background="#00ffffff"/>
+
+    </RelativeLayout>
+
+</ScrollView>

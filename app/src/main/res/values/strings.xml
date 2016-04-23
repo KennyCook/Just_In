@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Just In</string>
     <string name="title_activity_map_view">Just In</string>
+    <string name="facebook_app_id">781473918662619</string>
+    <string name="pin_create_category_text">Category</string>
+    <string name="pin_create_time_to_live_text">Pin Duration</string>
+    <string name="pin_create_description_text">Description (Optional)</string>
+    <string name="pin_create_submit_button_text">Submit</string>
+    <string name="pin_create_cancel_button_text">Cancel</string>
 </resources>

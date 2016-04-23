@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <fragment
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
@@ -14,16 +12,32 @@ android:layout_height="match_parent">
         android:layout_height="match_parent"
         tools:context="sledgehammerlabs.just_in.MapViewActivity" />
 
-    <!-- Need to add the image for button-->
-    <Button
-        android:id="@+id/recenter_camera_button"
-        android:onClick="OnRecenterButtonPress"
+    <ImageButton
+        android:id="@+id/pin_create_button"
+        android:contentDescription="PinCreateButton"
+        android:src="@drawable/createnewpin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:layout_marginEnd="10dp"
-        android:text="Camera"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:onClick="OnCreatePinButtonPress"
+        android:background="#00ffffff" />
+
+    <!-- TODO: Add Recenter Button -->
+
+    <ImageButton
+        android:id="@+id/recenter_button"
+        android:contentDescription="RecenterButton"
+        android:src="@drawable/recentercamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="10dp"
+        android:layout_above="@+id/pin_create_button"
+        android:layout_alignParentEnd="true"
+        android:onClick="OnRecenterButtonPress"
+        android:background="#00ffffff" />
 
 </RelativeLayout>

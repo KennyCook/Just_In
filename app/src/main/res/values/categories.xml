@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="categories">
-        <item>Events</item>
-        <item>Wait Time</item>
-        <item>Parking</item>
-        <item>Giveaways</item>
-        <item>Study</item>
+        <item>Event</item>
+        <item>Class/Seminar</item>
         <item>Construction</item>
-        <item>Class</item>
-        <item>Meeting</item>
-        <item>Sports</item>
-        <item>Music</item>
         <item>Food/Dining</item>
+        <item>Giveaway</item>
+        <item>Meeting</item>
+        <item>Music</item>
+        <item>Parking</item>
+        <item>Party</item>
         <item>Shopping</item>
+        <item>Sporting Event</item>
+        <item>Study</item>
+        <item>Wait Time</item>
     </string-array>
 </resources>
