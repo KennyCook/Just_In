@@ -1,10 +1,24 @@
 <resources>
+    <!-- General App info strings -->
     <string name="app_name">Just In</string>
     <string name="title_activity_map_view">Just In</string>
     <string name="facebook_app_id">781473918662619</string>
+    <!-- activity_pin_create strings -->
     <string name="pin_create_category_text">Category</string>
     <string name="pin_create_time_to_live_text">Pin Duration</string>
     <string name="pin_create_description_text">Description (Optional)</string>
     <string name="pin_create_submit_button_text">Submit</string>
     <string name="pin_create_cancel_button_text">Cancel</string>
+    <!-- main_menu strings -->
+    <string name="acct_settings">Account Settings</string>
+    <string name="about">About Just In</string>
+    <!-- activity_account_settings strings -->
+    <string name="acct_settings_title">Account Settings</string>
+    <string name="first_name">First Name:</string>
+    <string name="last_name">Last Name:</string>
+    <string name="birth_date">Birth Date:</string>
+    <string name="gender">Gender:</string>
+    <string name="country">Country:</string>
+    <string name="submit_acct_settings_button">Submit</string>
+    <string name="cancel_acct_settings_button">Cancel</string>
 </resources>

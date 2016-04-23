@@ -1,8 +1,5 @@
 package sledgehammerlabs.just_in;
 
-import java.lang.Object;
-import java.sql.SQLException;
-
 import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
@@ -14,6 +11,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -50,7 +50,7 @@ public class MapViewActivity extends AppCompatActivity implements
     private int filterID, viewDistance;
 
     public static final int GPS_ERROR_DIALOG_REQUEST = 1960,
-            CONNECTION_FAILED_RESOLUTION_REQUEST = 4441;
+                            CONNECTION_FAILED_RESOLUTION_REQUEST = 4441;
     //Zoom level range: 0-19
     private static final float DEFAULT_ZOOM = 16;
 
@@ -79,6 +79,13 @@ public class MapViewActivity extends AppCompatActivity implements
         }
 
         createDB();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     /**
@@ -164,13 +171,17 @@ public class MapViewActivity extends AppCompatActivity implements
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, DEFAULT_ZOOM));
     }
 
-    //Default listener, custom one defined in OnRecenterButtonPress()
+    /*
+     * Default listener, custom one defined in OnRecenterButtonPress()
+     */
     @Override
     public boolean onMyLocationButtonClick() {
         return false;
     }
 
-    //Default listener, custom one defined when marker is dropped
+    /*
+     * Default listener, custom one defined when marker is dropped
+     */
     @Override
     public boolean onMarkerClick(Marker marker) {
         return false;
@@ -253,7 +264,34 @@ public class MapViewActivity extends AppCompatActivity implements
     private void ConsolidatePins() {
     }
 
-    //Move camera to last known user location
+    /***************BUTTON METHODS***************/
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.acct_settings:
+                OnAccountSettingsMenuButtonPress();
+                return true;
+            case R.id.about:
+                OnAboutMenuButtonPress();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void OnAccountSettingsMenuButtonPress()
+    {
+        Intent intent = new Intent(MapViewActivity.this, AccountSettings.class);
+        startActivity(intent);
+    }
+
+    public void OnAboutMenuButtonPress(){}
+
+    /*
+     * Move camera to last known user location
+     */
     public void OnRecenterButtonPress(View view) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED &&
@@ -273,11 +311,11 @@ public class MapViewActivity extends AppCompatActivity implements
         // TODO: .newLatLngZoom?
         mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
 
-        //DEBUGGING CODE
+        //DB DEBUGGING CODE
         PinModel test2 = new PinModel();
         try
         {
-            test2 = pinTable.findPin(2);
+            test2 = pinTable.findPin(42);
             Toast.makeText(this, test2.getPinID(), Toast.LENGTH_SHORT).show();
         }
         catch(Exception e)
@@ -287,7 +325,9 @@ public class MapViewActivity extends AppCompatActivity implements
         }
     }
 
-    //Takes user to PinCreate screen
+    /*
+     * Takes user to PinCreate screen
+     */
     public void OnCreatePinButtonPress(View view)
     {
         // TODO: call GetLocation()?
@@ -296,9 +336,11 @@ public class MapViewActivity extends AppCompatActivity implements
         startActivity(createNewPin);
     }
 
-    //Checks if the user has Google Play services installed,
-    //  If not then the Google API error dialog prompts the user with the actions
-    //      needed to install or update
+    /*
+     * Checks if the user has Google Play services installed,
+     * If not then the Google API error dialog prompts the user with the actions
+     *  needed to install or update
+     */
     public boolean CheckServicesStatus() {
         GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
         int isAvailable = googleAPI.isGooglePlayServicesAvailable(this);
@@ -317,7 +359,7 @@ public class MapViewActivity extends AppCompatActivity implements
     public void createDB()
     {
         pinTable = new PinTable(this, "Just_In_DB", null, 1);
-        PinModel test = new PinModel(2, 1, 1, 0, 420);
+        PinModel test = new PinModel(42, 1, 1, 0, 420);
         if (pinTable.addPin(test))
         {
             Toast.makeText(this, "Added pin successfully", Toast.LENGTH_SHORT).show();
