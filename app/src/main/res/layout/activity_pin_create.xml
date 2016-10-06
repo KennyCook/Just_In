@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<!--
+File Name: activity_pin_create.xml
+Author: Kenneth Cook
+Description: Layout for the PinCreate Activity
+-->
+
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"

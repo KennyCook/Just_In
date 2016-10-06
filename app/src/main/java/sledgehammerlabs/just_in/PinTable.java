@@ -2,7 +2,6 @@ package sledgehammerlabs.just_in;
 
 /**
  * Created by Matt on 4/15/2016.
- *
  */
 
 import android.database.sqlite.SQLiteDatabase;
@@ -10,8 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.content.Context;
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
+
+import java.util.ArrayList;
 
 
 public class PinTable extends SQLiteOpenHelper{
@@ -25,6 +25,10 @@ public class PinTable extends SQLiteOpenHelper{
     public static final String PIN_LATITUDE = "latitude";
     public static final String PIN_CATEGORY = "category";
     public static final String PIN_SCORE = "score";
+
+    private SQLiteDatabase db;
+    private SQLiteOpenHelper dbHelper;
+
 
     public PinTable(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -43,11 +47,21 @@ public class PinTable extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PIN);
     }
+
+    public PinTable open(){
+        db = dbHelper.getWritableDatabase();
+        return this;
+    }
+
+    public void close(){
+        dbHelper.close();
+    }
+
     /*
      *  Adds a pin to the database with the pinID, longitude, latitude, category, score, and pin expiration time
-     *
      */
-    public boolean addPin(PinModel pin){
+
+    public void addPin(PinModel pin){
         ContentValues values = new ContentValues();
         values.put(PIN_PIN_ID, pin.getPinID());
         values.put(PIN_LONGITUDE, pin.getLongitude());
@@ -56,54 +70,60 @@ public class PinTable extends SQLiteOpenHelper{
         values.put(PIN_SCORE, pin.getScore());
 
         SQLiteDatabase db = this.getWritableDatabase();
-        if (db.insert(TABLE_PIN, null, values) == -1 )
-        {
-            db.close();
-            return false;
-        }
-        else
-        {
-            db.close();
-            return true;
-        }
+        db.insert(TABLE_PIN, null, values);
+        db.close();
     }
 
     public PinModel findPin(int id) {
-//        String query = "SELECT * FROM " + TABLE_PIN + " WHERE " + PIN_PIN_ID + " = \"" + id + "\"";
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        //Think the error is coming here
-//        //  Try using regular query
-//        Cursor cursor = db.rawQuery(query, null);
-
-        String query = "SELECT * FROM " + TABLE_PIN + " WHERE " + PIN_PIN_ID + " = ?";
         SQLiteDatabase db = this.getReadableDatabase();
-        //Think the error is coming here
-        // Try using regular query
-        Cursor cursor = db.rawQuery(query, new String[] {Integer.toString(id)});
+        Cursor cursor = db.query(TABLE_PIN, new String[]{PIN_PIN_ID,
+                        PIN_LONGITUDE, PIN_LATITUDE, PIN_CATEGORY, PIN_SCORE},
+                PIN_PIN_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
 
-        PinModel pin  = new PinModel();
-        if(cursor.moveToFirst()) {
+        if (cursor != null) {
             cursor.moveToFirst();
-            pin.setPinID(Integer.parseInt(cursor.getString(0)));
-            pin.setLongitude(Double.parseDouble(cursor.getString(1)));
-            pin.setLatitude(Double.parseDouble(cursor.getString(2)));
-            pin.setCategory(Integer.parseInt(cursor.getString(3)));
-            pin.setScore(Integer.parseInt(cursor.getString(4)));
-            Log.d("CURSOR_TAG", "Cursor at first");
+            Log.d("CURSOR", "Cursor != null");
+        }
 
-            cursor.close();
-        }
-        else {
-            pin = null;
-            Log.d("CURSOR_TAG", "Cursor not at first");
-        }
+        PinModel pin = new PinModel(Integer.parseInt(cursor.getString(0)),
+                Double.parseDouble(cursor.getString(1)), Double.parseDouble(cursor.getString(2)),
+                Integer.parseInt(cursor.getString(3)), Integer.parseInt(cursor.getString(4)));
+        Log.d("PIN", "Pin contents: " + pin.getPinID() + pin.getLatitude() + pin.getLongitude() +
+                pin.getCategory() + pin.getScore());
+
+        cursor.close();
+
         db.close();
         return pin;
     }
 
-    //Need a method to get a list of all pins in the table
-    //  just need the id, lat and long of each pin
-    //  return will probably be a list of PinModels
+    public ArrayList<PinModel> findMultiPin(ArrayList<PinModel> yuck) {
+        //int id;
+        SQLiteDatabase db = this.getWritableDatabase();
+        int index = 0;
+        PinModel pin  = new PinModel();
+        ArrayList<PinModel> elephant = new ArrayList<>();
+        while(!yuck.isEmpty()){
+            String query = "SELECT * FROM " + TABLE_PIN + " WHERE " + PIN_PIN_ID + " = \"" + yuck.get(index).getPinID() + "\"";
+            Cursor cursor = db.rawQuery(query, null);
+
+            if(cursor.moveToFirst()) {
+                cursor.moveToFirst();
+                pin.setPinID(Integer.parseInt(cursor.getString(0)));
+                pin.setLongitude(Double.parseDouble(cursor.getString(1)));
+                pin.setLatitude(Double.parseDouble(cursor.getString(2)));
+                pin.setCategory(Integer.parseInt(cursor.getString(3)));
+                pin.setScore(Integer.parseInt(cursor.getString(4)));
+
+                cursor.close();
+
+            } else {
+                pin = null;
+            }
+        }
+        return elephant;
+    }
+
 
     public boolean deletePin(int id) {
 
@@ -126,18 +146,4 @@ public class PinTable extends SQLiteOpenHelper{
         db.close();
         return result;
     }
-
-    public boolean deleteTable()
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-        if (db.delete(TABLE_PIN, "WHERE", null) == 0)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
 }

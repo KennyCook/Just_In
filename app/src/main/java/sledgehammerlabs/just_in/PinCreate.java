@@ -1,3 +1,17 @@
+/*
+ * File Name: PinCreate.java
+ * Author: Kenneth Cook
+ * Description: Called from MapViewActivity.
+  *     This class handles the functionality of the PinCreate activity.
+ *      It displays customization options the user has to create their pin and
+ *      sends the completed pin info to the server.
+ * Associated Files:
+ *      activity_pin_create.xml
+ *      strings.xml
+ *      categories.xml
+ *      lifetimes.xml
+ */
+
 package sledgehammerlabs.just_in;
 
 import android.app.Activity;

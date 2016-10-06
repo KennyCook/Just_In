@@ -1,3 +1,18 @@
+/*
+ * File Name: MapViewActivity.java
+ * Author: Kenneth Cook
+ * Description: This class contains logic for the map view. It is responsible
+ *      for obtaining the user's location and displaying it on the map, pulling
+ *      existing pin data from the server, copying it to the app-side DB,
+  *     and displaying the pins on the map.
+ *      MapView is the default view when opening Just In
+ * Associated Files:
+ *      PinView.java
+ *      PinCreate.java
+ *      AccountSettings.java
+ *      activity_map_view.xml
+ */
+
 package sledgehammerlabs.just_in;
 
 import android.Manifest;
@@ -10,7 +25,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -50,7 +67,7 @@ public class MapViewActivity extends AppCompatActivity implements
     private int filterID, viewDistance;
 
     public static final int GPS_ERROR_DIALOG_REQUEST = 1960,
-                            CONNECTION_FAILED_RESOLUTION_REQUEST = 4441;
+            CONNECTION_FAILED_RESOLUTION_REQUEST = 4441;
     //Zoom level range: 0-19
     private static final float DEFAULT_ZOOM = 16;
 
@@ -171,7 +188,7 @@ public class MapViewActivity extends AppCompatActivity implements
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, DEFAULT_ZOOM));
     }
 
-    /*
+    /**
      * Default listener, custom one defined in OnRecenterButtonPress()
      */
     @Override
@@ -179,7 +196,7 @@ public class MapViewActivity extends AppCompatActivity implements
         return false;
     }
 
-    /*
+    /**
      * Default listener, custom one defined when marker is dropped
      */
     @Override
@@ -228,7 +245,7 @@ public class MapViewActivity extends AppCompatActivity implements
         mMap.setMyLocationEnabled(true);*/
     }
 
-    // TODO: Remove debugging toasts
+    // TODO: remove debugging toasts
     private void GetLocation(Location location) {
 
         Toast.makeText(this, "In GetLocation()", Toast.LENGTH_SHORT).show();
@@ -239,6 +256,7 @@ public class MapViewActivity extends AppCompatActivity implements
         LatLng pos = new LatLng(userLat, userLong);
         mMap.addMarker(new MarkerOptions().position(pos));
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            // Custom marker press method.
             @Override
             public boolean onMarkerClick(Marker marker) {
                 if (marker != null) {
@@ -264,7 +282,7 @@ public class MapViewActivity extends AppCompatActivity implements
     private void ConsolidatePins() {
     }
 
-    /***************BUTTON METHODS***************/
+    /*************** BUTTON METHODS ***************/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -281,15 +299,15 @@ public class MapViewActivity extends AppCompatActivity implements
         }
     }
 
-    public void OnAccountSettingsMenuButtonPress()
-    {
+    public void OnAccountSettingsMenuButtonPress() {
         Intent intent = new Intent(MapViewActivity.this, AccountSettings.class);
         startActivity(intent);
     }
 
-    public void OnAboutMenuButtonPress(){}
+    public void OnAboutMenuButtonPress() {
+    }
 
-    /*
+    /**
      * Move camera to last known user location
      */
     public void OnRecenterButtonPress(View view) {
@@ -310,33 +328,19 @@ public class MapViewActivity extends AppCompatActivity implements
         LatLng myLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
         // TODO: .newLatLngZoom?
         mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
-
-        //DB DEBUGGING CODE
-        PinModel test2 = new PinModel();
-        try
-        {
-            test2 = pinTable.findPin(42);
-            Toast.makeText(this, test2.getPinID(), Toast.LENGTH_SHORT).show();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-            Toast.makeText(this, "Fuck my ass", Toast.LENGTH_SHORT).show();
-        }
     }
 
-    /*
+    /**
      * Takes user to PinCreate screen
      */
-    public void OnCreatePinButtonPress(View view)
-    {
+    public void OnCreatePinButtonPress(View view) {
         // TODO: call GetLocation()?
         double[] userPos = {userLat, userLong};
         Intent createNewPin = new Intent(MapViewActivity.this, PinCreate.class).putExtra("userPos", userPos);
         startActivity(createNewPin);
     }
 
-    /*
+    /**
      * Checks if the user has Google Play services installed,
      * If not then the Google API error dialog prompts the user with the actions
      *  needed to install or update
@@ -356,17 +360,31 @@ public class MapViewActivity extends AppCompatActivity implements
         return false;
     }
 
-    public void createDB()
-    {
-        pinTable = new PinTable(this, "Just_In_DB", null, 1);
-        PinModel test = new PinModel(42, 1, 1, 0, 420);
-        if (pinTable.addPin(test))
+    //DB DEBUGGING CODE
+    public void createDB() {
+        pinTable = new PinTable(MapViewActivity.this, "Just_In_DB", null, 1);
+        PinModel test = new PinModel(42, 1, 1, 0, 42);
+        if( pinTable.deletePin(42) )
         {
-            Toast.makeText(this, "Added pin successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Deleted successful", Toast.LENGTH_SHORT).show();
         }
         else
         {
-            Toast.makeText(this, "Added pin successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Delete unsuccessful", Toast.LENGTH_SHORT).show();
+        }
+        pinTable.addPin(test);
+        test = null;
+
+        PinModel test2;
+        try
+        {
+            test2 = pinTable.findPin(42);
+            Toast.makeText(this, " " + test2.getScore(), Toast.LENGTH_SHORT).show();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            Toast.makeText(this, "Exception caught while trying .findPin()", Toast.LENGTH_SHORT).show();
         }
     }
 }

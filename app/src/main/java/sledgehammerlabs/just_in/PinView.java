@@ -1,3 +1,14 @@
+/*
+ * File Name: PinView.java
+ * Author: Kenneth Cook
+ * Description: Called from MapViewActivity.
+ *      This class contains logic for the PinView. It is responsible
+ *      for displaying the information of pin selected on the MapView
+ *      and handling various button presses associated view (upvote, downvote, comment, report, share).
+ * Associated Files:
+ *      activity_pin_view.xml
+ */
+
 package sledgehammerlabs.just_in;
 
 import android.app.Application;
@@ -49,7 +60,6 @@ public class PinView extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // TODO: make map unclickable?
 
         DropLitePin();
     }
@@ -115,7 +125,7 @@ public class PinView extends AppCompatActivity implements OnMapReadyCallback
             {
                 try
                 {
-                    voteSender.SendVote(420, downVote);
+                    voteSender.SendVote(42, downVote);
                 }
                 catch (Exception e)
                 {
@@ -147,7 +157,7 @@ public class PinView extends AppCompatActivity implements OnMapReadyCallback
             {
                 try
                 {
-                    commentSender.SendComment(420, comment);
+                    commentSender.SendComment(42, comment);
                 }
                 catch (Exception e)
                 {
@@ -165,9 +175,6 @@ public class PinView extends AppCompatActivity implements OnMapReadyCallback
 
     public void OnShareButtonPress(View viw)
     {
-        PinTable pinTable = new PinTable(this, "Just_In_DB", null, 1);
-        PinModel test = pinTable.findPin(69);
-        Toast.makeText(this, test.getPinID(), Toast.LENGTH_SHORT).show();
     }
 }
 
